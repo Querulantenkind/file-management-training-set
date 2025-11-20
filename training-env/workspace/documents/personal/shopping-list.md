@@ -4,4 +4,4 @@
 - Item 2
 - Item 3
 
-Lorem ipsum dolor sit amet.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.

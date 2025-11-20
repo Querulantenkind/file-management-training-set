@@ -472,6 +472,131 @@ $LOREM_SHORT
 Consectetur adipiscing elit.
 EOF
 
+# === DATA LAB - text processing track ===
+cd "$TRAINING_ENV/workspace"
+mkdir -p data-lab/{logs,datasets,reports}
+
+cat > data-lab/README.md <<'EOF'
+# Data Lab Track
+
+The Data Lab contains purpose-built datasets and log files for advanced text-processing, parsing, and reporting exercises. Each file is intentionally noisy so you can practice chaining together tools like `grep`, `awk`, `sed`, and `cut` to extract actionable insights.
+
+## Directory Overview
+
+- `logs/` – Raw application, access, and ETL pipeline logs with mixed formats
+- `datasets/` – CSV/TSV files covering e-commerce transactions, IoT sensor readings, and support tickets
+- `reports/` – Analyst briefs that describe real-world investigation prompts
+
+Use these files to complete the new Text Processing & Data Science track in `EXERCISES.md`.
+EOF
+
+cd "$TRAINING_ENV/workspace/data-lab/logs"
+cat > access-2024-08.log <<'EOF'
+192.168.10.14 - - [15/Aug/2024:09:15:23 +0000] "GET /api/orders HTTP/1.1" 200 532 "-" "curl/7.81.0" 245ms
+192.168.10.14 - - [15/Aug/2024:09:16:01 +0000] "POST /api/orders HTTP/1.1" 201 834 "-" "curl/7.81.0" 388ms
+10.15.22.8 - - [15/Aug/2024:09:16:17 +0000] "GET /api/orders?status=pending HTTP/1.1" 200 2210 "https://dashboard.example/com" "Mozilla/5.0" 147ms
+172.16.4.20 - - [15/Aug/2024:09:16:43 +0000] "GET /reports/monthly HTTP/1.1" 302 112 "-" "Mozilla/5.0" 91ms
+192.168.10.14 - - [15/Aug/2024:09:17:02 +0000] "GET /api/orders/84721 HTTP/1.1" 200 645 "-" "curl/7.81.0" 210ms
+203.0.113.9 - - [15/Aug/2024:09:17:18 +0000] "GET /admin HTTP/1.1" 401 188 "-" "sqlmap/1.6" 512ms
+198.51.100.66 - - [15/Aug/2024:09:17:40 +0000] "GET /api/health HTTP/1.1" 200 85 "-" "kube-probe" 11ms
+10.15.22.8 - - [15/Aug/2024:09:18:14 +0000] "GET /api/orders?status=failed HTTP/1.1" 200 1951 "https://dashboard.example/com" "Mozilla/5.0" 158ms
+172.16.4.20 - - [15/Aug/2024:09:18:57 +0000] "GET /reports/monthly HTTP/1.1" 500 0 "-" "Mozilla/5.0" 421ms
+203.0.113.9 - - [15/Aug/2024:09:19:05 +0000] "POST /admin/login HTTP/1.1" 401 211 "-" "sqlmap/1.6" 498ms
+192.0.2.44 - - [15/Aug/2024:09:19:44 +0000] "GET /static/js/app.js HTTP/1.1" 200 12044 "https://example.com" "Mozilla/5.0" 33ms
+192.0.2.44 - - [15/Aug/2024:09:20:01 +0000] "GET /static/css/main.css HTTP/1.1" 200 9512 "https://example.com" "Mozilla/5.0" 29ms
+198.51.100.66 - - [15/Aug/2024:09:20:17 +0000] "GET /api/health HTTP/1.1" 500 91 "-" "kube-probe" 15ms
+10.15.22.8 - - [15/Aug/2024:09:21:05 +0000] "GET /api/orders/failed HTTP/1.1" 404 312 "https://dashboard.example/com" "Mozilla/5.0" 182ms
+192.168.10.14 - - [15/Aug/2024:09:21:37 +0000] "DELETE /api/orders/84721 HTTP/1.1" 204 0 "-" "curl/7.81.0" 264ms
+EOF
+
+cat > app-errors.log <<'EOF'
+[2024-08-15 09:14:58] INFO  auth-service  User login succeeded for user_id=483
+[2024-08-15 09:15:02] WARN  auth-service  Consecutive failures for user_id=912 (3 attempts)
+[2024-08-15 09:15:17] ERROR checkout-service  Payment gateway timeout order_id=84721 retry=1
+[2024-08-15 09:15:48] ERROR checkout-service  Payment gateway timeout order_id=84721 retry=2
+[2024-08-15 09:16:03] INFO  etl-worker      Loaded 3,214 rows from s3://raw/transactions/2024-08-15.csv
+[2024-08-15 09:16:11] WARN  etl-worker      Skipped malformed row at line=88 source=transactions
+[2024-08-15 09:16:55] ERROR report-engine   Template render failed report=monthly margin=finance
+[2024-08-15 09:17:29] INFO  checkout-service  Payment succeeded order_id=84721
+[2024-08-15 09:17:42] ERROR api-gateway    Downstream 500 for route=/reports/monthly trace=eeac12
+[2024-08-15 09:18:05] WARN  api-gateway    High latency detected route=/api/orders threshold=250ms
+[2024-08-15 09:18:40] ERROR auth-service   Locked account user_id=912 reason=too_many_attempts
+[2024-08-15 09:19:02] ERROR etl-worker     Output validation failed job=orders_daily missing=5 rows
+EOF
+
+cat > etl-pipeline.log <<'EOF'
+2024-08-15T09:00:00Z STEP=ingest_raw   STATUS=START  SOURCE=orders/2024/08/15.csv
+2024-08-15T09:00:46Z STEP=ingest_raw   STATUS=END    ROWS=3200 DURATION=46s
+2024-08-15T09:01:02Z STEP=clean_records STATUS=START  FILTERS=duplicate,missing_price
+2024-08-15T09:01:58Z STEP=clean_records STATUS=END    ROWS=2984 REMOVED=216
+2024-08-15T09:02:11Z STEP=enrich_geo    STATUS=START  LOOKUP=geoip
+2024-08-15T09:02:33Z STEP=enrich_geo    STATUS=WARNING MISSING_GEO=42
+2024-08-15T09:02:54Z STEP=enrich_geo    STATUS=END    ROWS=2984 DURATION=43s
+2024-08-15T09:03:05Z STEP=aggregate     STATUS=START  METRIC=revenue_by_region
+2024-08-15T09:03:37Z STEP=aggregate     STATUS=END    GROUPS=8 DURATION=32s
+2024-08-15T09:03:42Z STEP=publish       STATUS=START  TARGET=warehouse.orders_daily
+2024-08-15T09:04:05Z STEP=publish       STATUS=FAIL   ERROR="constraint violation" RETRIES=1
+2024-08-15T09:04:45Z STEP=publish       STATUS=START  TARGET=warehouse.orders_daily
+2024-08-15T09:05:08Z STEP=publish       STATUS=END    ROWS=2984 DURATION=23s
+EOF
+
+cd "$TRAINING_ENV/workspace/data-lab/datasets"
+cat > ecommerce_transactions.csv <<'EOF'
+order_id,date,region,status,total,channel
+A84721,2024-08-15T09:14:55Z,NA,FAILED,182.45,web
+A84722,2024-08-15T09:15:42Z,NA,RETRY,182.45,web
+A84723,2024-08-15T09:16:18Z,EMEA,SUCCESS,75.00,mobile
+A84724,2024-08-15T09:17:05Z,APAC,SUCCESS,49.99,api
+A84725,2024-08-15T09:17:48Z,NA,SUCCESS,182.45,web
+A84726,2024-08-15T09:18:10Z,APAC,FAILED,210.00,mobile
+A84727,2024-08-15T09:18:51Z,EMEA,SUCCESS,120.10,web
+A84728,2024-08-15T09:19:32Z,NA,SUCCESS,330.00,api
+A84729,2024-08-15T09:19:59Z,EMEA,SUCCESS,25.00,mobile
+A84730,2024-08-15T09:20:41Z,APAC,SUCCESS,99.99,web
+EOF
+
+cat > sensor_readings.tsv <<'EOF'
+device_id	sensor	temp_c	humidity	battery	timestamp
+EDGE-001	temp	21.4	33	98	2024-08-15T09:15:00Z
+EDGE-002	humidity	-	78	76	2024-08-15T09:15:05Z
+EDGE-003	temp	19.8	44	65	2024-08-15T09:15:08Z
+EDGE-001	humidity	21.4	35	97	2024-08-15T09:15:11Z
+EDGE-004	temp	NaN	--	58	2024-08-15T09:15:19Z
+EDGE-002	temp	23.0	73	74	2024-08-15T09:15:23Z
+EDGE-005	humidity	24.1	29	89	2024-08-15T09:15:28Z
+EDGE-003	humidity	19.8	45	65	2024-08-15T09:15:33Z
+EDGE-004	humidity	18.1	41	58	2024-08-15T09:15:40Z
+EDGE-001	temp	21.8	34	96	2024-08-15T09:15:45Z
+EOF
+
+cat > support_tickets.csv <<'EOF'
+id,priority,state,category,message
+T-501,high,open,payment,"Customer charged twice for order A84721"
+T-502,medium,waiting,shipping,"Missing tracking update for order A84719"
+T-503,low,closed,general,"Request for invoice copy"
+T-504,high,open,security,"Suspicious login alerts for account 912"
+T-505,medium,open,payment,"Coupon discount incorrect for cart 733"
+T-506,high,escalated,availability,"Reports dashboard returning 500"
+EOF
+
+cd "$TRAINING_ENV/workspace/data-lab/reports"
+cat > analysis-brief.md <<'EOF'
+# Incident Brief
+
+Revenue dipped on August 15th after a run of failed checkouts and timeouts in the reporting backend.
+Analysts need fast answers to the following questions:
+
+1. Which customer regions saw the most failed transactions between 09:14 and 09:20 UTC?
+2. How many unique IPs received HTTP 401 or 500 responses?
+3. Which ETL step should be prioritized for hardening based on the warnings in `etl-pipeline.log`?
+4. Which sensor devices are sending malformed readings and need firmware attention?
+
+Use the files inside `data-lab/` to extract the answers.
+EOF
+
+# Return to workspace root for remaining operations
+cd "$TRAINING_ENV/workspace"
+
 # Additional JSON file
 cat > projects/mobile-app/tsconfig.json <<EOF
 {

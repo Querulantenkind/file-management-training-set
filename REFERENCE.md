@@ -442,6 +442,20 @@ awk '$3 > 100' file             # Print lines where column 3 > 100
 awk '{sum+=$1} END {print sum}' # Sum column 1
 ```
 
+### Data Lab Recipes
+
+```bash
+# Top endpoints in the HTTP log
+awk '{print $7}' data-lab/logs/access-2024-08.log | sort | uniq -c | sort -rn | head -5
+
+# Capture malformed sensor readings
+grep -E '\t(-|--|NaN)\t' data-lab/datasets/sensor_readings.tsv > sensor_readings_bad.tsv
+
+# Revenue by region and status bucket
+awk -F',' 'NR>1 {bucket=($4=="SUCCESS"?"ok":"issue"); sum[$3 FS bucket]+=$5} \
+    END {for (k in sum) printf "%s,%s,%0.2f\n", k}' data-lab/datasets/ecommerce_transactions.csv
+```
+
 ---
 
 ## Useful Patterns

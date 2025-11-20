@@ -1,5 +1,7 @@
 # File Management Training Set
 
+<!-- markdownlint-disable MD022 MD031 MD032 MD033 MD040 -->
+
 A comprehensive training environment for learning command-line file management operations and CLI workflows. Practice essential Unix/Linux commands in a safe, realistic sandbox with 195+ files organized in a multi-level directory structure.
 
 ## Overview
@@ -18,12 +20,10 @@ This repository provides a complete training environment designed to help you ma
 - **Automation**: Build skills to automate repetitive file management tasks
 
 ## Features
-
-- **195+ Files** across diverse types (.txt, .md, .json, .csv, .log, .xml, .sql, and more)
-- **Realistic Directory Structure** mimicking real projects, documents, media, and downloads
-- **Progressive Exercises** from beginner to advanced (18 exercises across 4 levels)
 - **Intentionally Messy Folder** for practicing cleanup and organization
 - **Helper Scripts** for setup, reset, and verification
+- **Interactive TUI Dashboard** for navigating exercises, hints, demos, and stats from one place
+- **Data Lab Track** with realistic logs/datasets for text processing and data science drills
 - **Comprehensive Documentation** with exercises, solutions, and reference materials
 - **Safe Environment** - practice without fear of breaking anything important
 
@@ -32,7 +32,17 @@ This repository provides a complete training environment designed to help you ma
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Querulantenkind/file-management-training-set.git
+### 4. Launch the TUI Dashboard
+
+Prefer menus over memorizing script names? Fire up the dashboard:
+
+```bash
+./scripts/menu.sh
+```
+
+From here you can jump into exercises, demos, hints, stats, and resets without typing long commands.
+
+### 5. Begin with Exercise 01
 cd file-management-training-set
 ```
 
@@ -73,6 +83,7 @@ training-env/
 │   ├── documents/          # Reports, invoices, contracts, personal files
 │   ├── media/              # Images, videos, audio files
 │   ├── downloads/          # Downloads folder with various file types
+│   ├── data-lab/           # Logs & datasets for the text processing track
 │   └── backup/             # Old backups with logs
 └── messy-folder/          # Intentionally disorganized for cleanup practice
 ```
@@ -105,6 +116,20 @@ training-env/
 - Exercise 17: Extract data from logs
 - Exercise 18: Backup specific file patterns
 
+### Text Processing & Data Science Track (Data Lab)
+- Exercise 19: HTTP log forensics in `data-lab/logs`
+- Exercise 20: Sensor data cleanup & aggregation
+- Exercise 21: Revenue pulse report using multiple datasets
+
+## Data Lab Overview
+
+The `training-env/workspace/data-lab/` directory is a mini incident room packed with:
+- **logs/** – HTTP access logs, application errors, and ETL pipeline traces for grep/awk drills
+- **datasets/** – CSV/TSV files covering e-commerce transactions, IoT sensor readings, and support tickets
+- **reports/** – Briefings that describe the business problem you're solving
+
+Use these files with the new track to practice chaining together filters, aggregations, and reporting commands.
+
 ## Documentation
 
 ### Files in This Repository
@@ -118,8 +143,17 @@ training-env/
   - `generate.sh` - Generate training files
   - `reset.sh` - Reset environment to initial state
   - `verify.sh` - Verify environment integrity
+  - `menu.sh` - Interactive dashboard for exercises, hints, demos, and stats
 
 ### Using the Helper Scripts
+
+#### Launch the TUI Dashboard
+
+```bash
+./scripts/menu.sh
+```
+
+Opens an interactive menu that lets you jump into exercises, request hints, watch demos, see environment stats, or reset the workspace without remembering individual script names.
 
 #### Setup the Environment
 

@@ -1,0 +1,7 @@
+id,priority,state,category,message
+T-501,high,open,payment,"Customer charged twice for order A84721"
+T-502,medium,waiting,shipping,"Missing tracking update for order A84719"
+T-503,low,closed,general,"Request for invoice copy"
+T-504,high,open,security,"Suspicious login alerts for account 912"
+T-505,medium,open,payment,"Coupon discount incorrect for cart 733"
+T-506,high,escalated,availability,"Reports dashboard returning 500"

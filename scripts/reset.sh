@@ -47,6 +47,7 @@ mkdir -p training-env/workspace/media/images/{photos,screenshots,downloads}
 mkdir -p training-env/workspace/media/{videos,audio}
 mkdir -p training-env/workspace/downloads/{tmp,archives}
 mkdir -p training-env/workspace/backup/{old-backup-2023,old-backup-2024}
+mkdir -p training-env/workspace/data-lab/{logs,datasets,reports}
 mkdir -p training-env/messy-folder
 
 echo "✓ Directory structure created"
