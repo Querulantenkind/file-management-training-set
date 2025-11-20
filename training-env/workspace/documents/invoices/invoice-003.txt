@@ -1,0 +1,4 @@
+Invoice #003
+Date: 2024-03-10
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Total: $2000

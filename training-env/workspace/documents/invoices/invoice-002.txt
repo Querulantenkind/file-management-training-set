@@ -1,0 +1,4 @@
+Invoice #002
+Date: 2024-02-20
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Total: $1500

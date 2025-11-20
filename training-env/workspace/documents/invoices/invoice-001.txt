@@ -1,0 +1,4 @@
+Invoice #001
+Date: 2024-01-15
+Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+Total: $1000
